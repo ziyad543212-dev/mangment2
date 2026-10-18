@@ -2,6 +2,8 @@
 
 A single-owner workspace project and task manager. Every project, task, and activity event is scoped to its authenticated owner.
 
+The client supports English and Arabic. Use the language toggle in the top bar or sign-in/sign-up pages; the choice is saved in the browser and Arabic switches the interface to right-to-left layout.
+
 ## Structure
 
 ```text

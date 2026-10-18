@@ -1,21 +1,25 @@
+import { useLocale } from '../state/locale.jsx';
+
 const projectStatus = {
-  NOT_STARTED: ['Not started', 'status-neutral'],
-  IN_PROGRESS: ['In progress', 'status-progress'],
-  COMPLETED: ['Completed', 'status-done']
+  NOT_STARTED: ['notStarted', 'status-neutral'],
+  IN_PROGRESS: ['inProgress', 'status-progress'],
+  COMPLETED: ['completed', 'status-done']
 };
 
 const taskStatus = {
-  TODO: ['To do', 'status-neutral'],
-  IN_PROGRESS: ['In progress', 'status-progress'],
-  DONE: ['Done', 'status-done']
+  TODO: ['todo', 'status-neutral'],
+  IN_PROGRESS: ['inProgress', 'status-progress'],
+  DONE: ['completed', 'status-done']
 };
 
 export function StatusBadge({ status, task = false }) {
-  const [label, style] = (task ? taskStatus : projectStatus)[status] || ['Unknown', 'status-neutral'];
-  return <span className={`status-badge ${style}`}><span />{label}</span>;
+  const { t } = useLocale();
+  const [label, style] = (task ? taskStatus : projectStatus)[status] || ['unknown', 'status-neutral'];
+  return <span className={`status-badge ${style}`}><span />{t(label)}</span>;
 }
 
 export function PriorityBadge({ priority }) {
-  const labels = { LOW: 'Low', MEDIUM: 'Medium', HIGH: 'High' };
-  return <span className={`priority-badge priority-${priority?.toLowerCase()}`}>{labels[priority] || priority}</span>;
+  const { t } = useLocale();
+  const labels = { LOW: 'low', MEDIUM: 'medium', HIGH: 'high' };
+  return <span className={`priority-badge priority-${priority?.toLowerCase()}`}>{t(labels[priority] || 'unknown')}</span>;
 }

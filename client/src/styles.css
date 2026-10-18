@@ -311,6 +311,32 @@ h1, h2, h3, h4, p { margin-top: 0; }
 .auth-switch a { margin-left: 3px; color: #168568; font-weight: 700; }
 .auth-switch a:hover { text-decoration: underline; }
 .auth-terms { margin: 29px 0 0; padding-top: 15px; border-top: 1px solid #edf0f1; color: #a0a9ad; font-size: 9px; text-align: center; }
+.language-toggle { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 31px; padding: 0 10px; border: 1px solid #e5eae9; border-radius: 7px; color: #64736f; background: #fff; font-size: 10px; font-weight: 600; transition: .18s; }
+.language-toggle:hover { border-color: #b9d5cb; color: #106d55; background: #f6fbf8; }
+.auth-form-panel { position: relative; }
+.auth-top-actions { position: absolute; top: 25px; right: 32px; display: flex; align-items: center; justify-content: flex-end; }
+.auth-mobile-brand { display: none; }
+
+html[dir="rtl"] { font-family: 'Noto Sans Arabic', 'DM Sans', sans-serif; }
+html[dir="rtl"] body, html[dir="rtl"] button, html[dir="rtl"] input, html[dir="rtl"] select, html[dir="rtl"] textarea { font-family: 'Noto Sans Arabic', 'DM Sans', sans-serif; }
+html[dir="rtl"] h1, html[dir="rtl"] h2, html[dir="rtl"] h3, html[dir="rtl"] h4 { font-family: 'Noto Sans Arabic', 'Manrope', sans-serif; }
+html[dir="rtl"] .sidebar { right: 0; left: auto; border-right: 0; border-left: 1px solid #e9edef; }
+html[dir="rtl"] .main-area { margin-right: 248px; margin-left: 0; }
+html[dir="rtl"] .metric-label { right: 57px; left: auto; }
+html[dir="rtl"] .project-row, html[dir="rtl"] .activity-row, html[dir="rtl"] .deadline-row { text-align: right; }
+html[dir="rtl"] .nav-count { margin-right: auto; margin-left: 0; }
+html[dir="rtl"] .project-arrow { transform: rotate(180deg); }
+html[dir="rtl"] .project-row:hover .project-arrow { transform: rotate(180deg) translateX(2px); }
+html[dir="rtl"] .task-card, html[dir="rtl"] .task-card h4, html[dir="rtl"] .task-card > p,
+html[dir="rtl"] .column-heading, html[dir="rtl"] .column-empty, html[dir="rtl"] .field,
+html[dir="rtl"] .modal-heading, html[dir="rtl"] .project-hero, html[dir="rtl"] .moment-card { text-align: right; }
+html[dir="rtl"] .task-action-menu { right: auto; left: 0; }
+html[dir="rtl"] .moment-signoff span { margin-right: auto; }
+html[dir="rtl"] .auth-back svg, html[dir="rtl"] .back-link svg { transform: rotate(180deg); }
+html[dir="rtl"] .auth-panel-copy, html[dir="rtl"] .auth-panel-footer { text-align: right; }
+html[dir="rtl"] .field-hint { direction: rtl; }
+html[dir="rtl"] .metric-label { font-size: 10px; }
+html[dir="rtl"] input[type="email"], html[dir="rtl"] input[type="password"], html[dir="rtl"] input[type="date"] { direction: ltr; text-align: left; }
 
 @media (min-width: 1500px) {
   .page-content { padding-right: 52px; padding-left: 52px; }
@@ -401,16 +427,23 @@ h1, h2, h3, h4, p { margin-top: 0; }
   .auth-form-panel { display: block; min-height: 100vh; padding: 25px 23px; }
   .auth-mobile-brand { display: flex; margin-bottom: 42px; padding: 0; font-size: 18px; }
   .auth-mobile-brand .brand-mark { width: 27px; height: 27px; }
+  .auth-top-actions { position: static; justify-content: space-between; margin-bottom: 38px; }
+  .auth-top-actions .auth-mobile-brand { display: flex; margin: 0; }
   .auth-form-wrap { margin: 0 auto; }
   .auth-back { margin-bottom: 29px; }
   .auth-heading h2 { font-size: 20px; }
   .auth-terms { margin-top: 22px; }
+  html[dir="rtl"] .main-area { margin-right: 0; }
+  html[dir="rtl"] .sidebar { transform: translateX(102%); }
+  html[dir="rtl"] .sidebar-open { transform: translateX(0); }
+  html[dir="rtl"] .metric-label { right: 47px; left: auto; }
 }
 @media (max-width: 390px) {
   .page-content { padding-right: 11px; padding-left: 11px; }
   .metric-card { padding: 10px; }
   .metric-label { left: 43px; font-size: 8px; }
   .metric-note { font-size: 7px; }
+  html[dir="rtl"] .metric-label { right: 43px; }
   .project-meta { flex-wrap: wrap; }
   .task-stack { grid-template-columns: 1fr; }
 }

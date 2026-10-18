@@ -15,15 +15,18 @@ export async function signup(req, res) {
   return res.status(201).json({ user });
 }
 
-export async function signin(req, res) {
-  const { email, password } = req.validated.body;
-  const record = await prisma.user.findUnique({ where: { email } });
-  const passwordMatches = record ? await bcrypt.compare(password, record.passwordHash) : false;
-  if (!passwordMatches) {
-    return res.status(401).json({ error: 'Email or password is incorrect' });
+export async function signin(req, res ,next) {
+ try {
+    const { name, email, password } = req.body;
+    // ...
+    // تأكد من وجود كود الإرجاع في نهاية الدالة:
+    return res.status(201).json({
+      user: { id: user.id, name: user.name, email: user.email }
+    });
+  } catch (error) {
+    console.error("Signup error in server:", error); // اطبع الخطأ لتراه في التيرمينال
+    return res.status(500).json({ message: "حدث خطأ غير متوقع في الخادم" });
   }
-  issueSession(res, record.id);
-  return res.json({ user: publicUser(record) });
 }
 
 export function signout(_req, res) {

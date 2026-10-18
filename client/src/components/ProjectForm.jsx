@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useLocale } from '../state/locale.jsx';
 
 const empty = { title: '', description: '', status: 'NOT_STARTED', priority: 'MEDIUM', dueDate: '' };
 
 export default function ProjectForm({ initial = empty, onSubmit, onCancel }) {
+  const { t } = useLocale();
   const [form, setForm] = useState({
     ...empty,
     ...initial,
@@ -31,14 +33,14 @@ export default function ProjectForm({ initial = empty, onSubmit, onCancel }) {
   return (
     <form className="form-stack" onSubmit={submit}>
       {error && <div className="form-error">{error}</div>}
-      <label className="field"><span>Project name</span><input autoFocus required maxLength={120} placeholder="e.g. Website redesign" value={form.title} onChange={(event) => update('title', event.target.value)} /></label>
-      <label className="field"><span>Description <small>Optional</small></span><textarea rows="3" maxLength={2000} placeholder="What are you working towards?" value={form.description} onChange={(event) => update('description', event.target.value)} /></label>
+      <label className="field"><span>{t('projectName')}</span><input autoFocus required maxLength={120} placeholder={t('exampleProject')} value={form.title} onChange={(event) => update('title', event.target.value)} /></label>
+      <label className="field"><span>{t('description')} <small>{t('optional')}</small></span><textarea rows="3" maxLength={2000} placeholder={t('projectDescriptionPlaceholder')} value={form.description} onChange={(event) => update('description', event.target.value)} /></label>
       <div className="form-grid">
-        <label className="field"><span>Status</span><select value={form.status} onChange={(event) => update('status', event.target.value)}><option value="NOT_STARTED">Not started</option><option value="IN_PROGRESS">In progress</option><option value="COMPLETED">Completed</option></select></label>
-        <label className="field"><span>Priority</span><select value={form.priority} onChange={(event) => update('priority', event.target.value)}><option value="LOW">Low</option><option value="MEDIUM">Medium</option><option value="HIGH">High</option></select></label>
+        <label className="field"><span>{t('status')}</span><select value={form.status} onChange={(event) => update('status', event.target.value)}><option value="NOT_STARTED">{t('notStarted')}</option><option value="IN_PROGRESS">{t('inProgress')}</option><option value="COMPLETED">{t('completed')}</option></select></label>
+        <label className="field"><span>{t('priority')}</span><select value={form.priority} onChange={(event) => update('priority', event.target.value)}><option value="LOW">{t('low')}</option><option value="MEDIUM">{t('medium')}</option><option value="HIGH">{t('high')}</option></select></label>
       </div>
-      <label className="field"><span>Due date <small>Optional</small></span><input type="date" value={form.dueDate} onChange={(event) => update('dueDate', event.target.value)} /></label>
-      <div className="modal-actions"><button type="button" className="button button-quiet" onClick={onCancel}>Cancel</button><button className="button button-primary" disabled={saving}>{saving ? 'Saving…' : 'Save project'}</button></div>
+      <label className="field"><span>{t('dueDate')} <small>{t('optional')}</small></span><input type="date" value={form.dueDate} onChange={(event) => update('dueDate', event.target.value)} /></label>
+      <div className="modal-actions"><button type="button" className="button button-quiet" onClick={onCancel}>{t('cancel')}</button><button className="button button-primary" disabled={saving}>{saving ? t('saving') : t('saveProject')}</button></div>
     </form>
   );
 }
