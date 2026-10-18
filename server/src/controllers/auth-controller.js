@@ -15,17 +15,35 @@ export async function signup(req, res) {
   return res.status(201).json({ user });
 }
 
-export async function signin(req, res ,next) {
- try {
-    const { name, email, password } = req.body;
-    // ...
-    // تأكد من وجود كود الإرجاع في نهاية الدالة:
-    return res.status(201).json({
-      user: { id: user.id, name: user.name, email: user.email }
+export async function signin(req, res) {
+  try {
+    const { email, password } = req.validated?.body || req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password are required' });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { email }
+    });
+
+    if (!user) {
+      return res.status(401).json({ error: 'Email or password is incorrect' });
+    }
+
+    const isValidPassword = await bcrypt.compare(password, user.passwordHash);
+    if (!isValidPassword) {
+      return res.status(401).json({ error: 'Email or password is incorrect' });
+    }
+
+    issueSession(res, user.id);
+
+    return res.status(200).json({
+      user: publicUser(user)
     });
   } catch (error) {
-    console.error("Signup error in server:", error); // اطبع الخطأ لتراه في التيرمينال
-    return res.status(500).json({ message: "حدث خطأ غير متوقع في الخادم" });
+    console.error("Signin error in server:", error);
+    return res.status(500).json({ error: 'An unexpected server error occurred' });
   }
 }
 
