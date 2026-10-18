@@ -13,18 +13,46 @@ export const app = express();
 if (process.env.TRUST_PROXY === '1') app.set('trust proxy', 1);
 app.disable('x-powered-by');
 app.use(helmet());
+
+// دالة التحقق المرنة من النطاقات المسموحة
+const isOriginAllowed = (origin) => {
+  if (!origin) return true;
+  if (origin === process.env.CLIENT_ORIGIN) return true;
+  if (origin.endsWith('.vercel.app')) return true;
+  if (origin.startsWith('http://localhost:')) return true;
+  return false;
+};
+
 app.use(cors({
-  origin: process.env.CLIENT_ORIGIN,
+  origin: (origin, callback) => {
+    if (isOriginAllowed(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error('Blocked by CORS'));
+  },
   credentials: true,
-  methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-  allowedHeaders: ['Content-Type']
+  methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
+
+// الاستجابة لطلبات الـ Preflight لجميع المسارات
+app.options('*', cors());
+
 app.use(express.json({ limit: '32kb' }));
 app.use(cookieParser());
+
+// فحص الـ Origin للطلبات التي تعدل البيانات
 app.use('/api', (req, res, next) => {
-  if (['POST', 'PATCH', 'PUT', 'DELETE'].includes(req.method)) return requireTrustedOrigin(req, res, next);
+  if (['POST', 'PATCH', 'PUT', 'DELETE'].includes(req.method)) {
+    const origin = req.headers.origin;
+    if (isOriginAllowed(origin)) {
+      return next();
+    }
+    return requireTrustedOrigin(req, res, next);
+  }
   return next();
 });
+
 app.get('/health', (_req, res) => res.json({ status: 'ok' }));
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
